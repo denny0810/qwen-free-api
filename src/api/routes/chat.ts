@@ -4,6 +4,9 @@ import Request from "@/lib/request/Request.ts";
 import Response from "@/lib/response/Response.ts";
 import chat from "@/api/controllers/chat.ts";
 
+// 容器环境变量 `CAT_AUTHORIZATION` 
+const CHAT_AUTHORIZATION = process.env.CHAT_AUTHORIZATION;
+
 export default {
   prefix: "/v1/chat",
 
@@ -13,6 +16,12 @@ export default {
         .validate('body.conversation_id', v => _.isUndefined(v) || _.isString(v))
         .validate("body.messages", _.isArray)
         .validate("headers.authorization", _.isString);
+
+      // 如果环境变量没有token则读取请求中的
+      if (CHAT_AUTHORIZATION) {
+        request.headers.authorization = "Bearer " + CHAT_AUTHORIZATION;
+      }
+      
       // ticket切分
       const tokens = chat.tokenSplit(request.headers.authorization);
       // 随机挑选一个ticket
