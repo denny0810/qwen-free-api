@@ -40,7 +40,7 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: |
-          vinlic/qwen-free-api:${{ steps.tag_name.outputs.tag }}
-          vinlic/qwen-free-api:latest
+          denny0810/qwen-free-api:${{ steps.tag_name.outputs.tag }}
+          denny0810/qwen-free-api:latest
         platforms: linux/amd64,linux/arm64
         build-args: TARGETPLATFORM=${{ matrix.platform }}
