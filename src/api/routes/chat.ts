@@ -4,8 +4,8 @@ import Request from "@/lib/request/Request.ts";
 import Response from "@/lib/response/Response.ts";
 import chat from "@/api/controllers/chat.ts";
 
-// 容器环境变量 `CAT_AUTHORIZATION` 
-const CHAT_AUTHORIZATION = process.env.CHAT_AUTHORIZATION;
+// 容器环境变量 `QWEN_CHAT_AUTHORIZATION` 
+const CHAT_AUTHORIZATION = process.env.QWEN_CHAT_AUTHORIZATION;
 
 export default {
   prefix: "/v1/chat",
