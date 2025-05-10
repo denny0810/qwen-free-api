@@ -8,6 +8,7 @@ on:
       tag:
         description: 'Tag Name'
         required: true
+        default: "latest"
 
 jobs:
   build-and-push:
