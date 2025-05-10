@@ -17,16 +17,20 @@ export default {
         .validate("body.messages", _.isArray)
         .validate('headers.authorization', v => _.isUndefined(v) || _.isString(v));
 
-      // Use client-provided token if available; otherwise, use environment variable
-      const authHeader = request.headers.authorization || 
-                       (CHAT_AUTHORIZATION ? `Bearer ${CHAT_AUTHORIZATION}` : null);
-      if (!authHeader) {
-         throw new Error('Authorization header or environment variable must be provided');
+      // Use environment token if available; otherwise, use client variable
+      if (CHAT_AUTHORIZATION）{
+        request.headers.authorization = "Bearer " + CHAT_AUTHORIZATION;
       }
-      // ticket切分
-      const tokens = chat.tokenSplit(authHeader);
-      // 随机挑选一个ticket
+      // token切分
+      const tokens = chat.tokenSplit(request.headers.authorization);
+      // 随机挑选一个token
       const token = _.sample(tokens);
+            
+      console.log('[DEBUG] CHAT_AUTHORIZATION:', CHAT_AUTHORIZATION);
+      console.log('[DEBUG] Using authHeader:', request.headers.authorization);
+      console.log('[DEBUG] Tokens:', tokens);
+      console.log('[DEBUG] Token:', token);
+      
       const { model, conversation_id: convId, messages, search_type, stream } = request.body;
       if (stream) {
         const stream = await chat.createCompletionStream(
