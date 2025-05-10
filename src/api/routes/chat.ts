@@ -24,7 +24,7 @@ export default {
          throw new Error('Authorization header or environment variable must be provided');
       }
       // ticket切分
-      const tokens = chat.tokenSplit(request.headers.authorization);
+      const tokens = chat.tokenSplit(authHeader);
       // 随机挑选一个ticket
       const token = _.sample(tokens);
       const { model, conversation_id: convId, messages, search_type, stream } = request.body;
