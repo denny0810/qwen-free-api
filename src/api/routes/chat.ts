@@ -17,7 +17,11 @@ export default {
         .validate('body.conversation_id', v => _.isUndefined(v) || _.isString(v))
         .validate("body.messages", _.isArray)
         .validate('headers.authorization', v => _.isUndefined(v) || _.isString(v));
-
+      
+      if (DEBUG_MODE === 'ON' || DEBUG_MODE === 'on') {
+        console.log('[DEBUG] Raw authorization:', request.headers.authorization);
+      }
+      
       // Check if authorization header exists and has enough characters
       const authHeader = request.headers.authorization;
       const authContent = authHeader && authHeader.startsWith("Bearer ") 
@@ -36,7 +40,6 @@ export default {
             
       if (DEBUG_MODE === 'ON' || DEBUG_MODE === 'on') {
         console.log('[DEBUG] CHAT_AUTHORIZATION:', CHAT_AUTHORIZATION);
-        console.log('[DEBUG] Raw request:', request);
         console.log('[DEBUG] Using authHeader:', request.headers.authorization);
         console.log('[DEBUG] Tokens:', tokens);
         console.log('[DEBUG] Token:', token);
