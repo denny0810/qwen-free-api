@@ -17,10 +17,17 @@ export default {
         .validate("body.messages", _.isArray)
         .validate('headers.authorization', v => _.isUndefined(v) || _.isString(v));
 
-      // Use environment token if available; otherwise, use client variable
-      if (CHAT_AUTHORIZATION) {
+      // Check if authorization header exists and has enough characters
+      const authHeader = request.headers.authorization;
+      const authContent = authHeader && authHeader.startsWith("Bearer ") 
+        ? authHeader.slice(7) // Remove "Bearer " prefix
+        : "";
+      
+      // Use CHAT_AUTHORIZATION if authContent is less than 30 characters or undefined
+      if (!authContent || authContent.length < 30) {
         request.headers.authorization = "Bearer " + CHAT_AUTHORIZATION;
       }
+      
       // token切分
       const tokens = chat.tokenSplit(request.headers.authorization);
       // 随机挑选一个token
