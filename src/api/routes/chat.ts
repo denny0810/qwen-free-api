@@ -6,6 +6,7 @@ import chat from "@/api/controllers/chat.ts";
 
 // 容器环境变量 `CHAT_AUTHORIZATION` 
 const CHAT_AUTHORIZATION = process.env.CHAT_AUTHORIZATION;
+const DEBUG_MODE = process.env.DEBUG_MODE;
 
 export default {
   prefix: "/v1/chat",
@@ -33,11 +34,13 @@ export default {
       // 随机挑选一个token
       const token = _.sample(tokens);
             
-      console.log('[DEBUG] CHAT_AUTHORIZATION:', CHAT_AUTHORIZATION);
-      console.log('[DEBUG] Using authHeader:', request.headers.authorization);
-      console.log('[DEBUG] Tokens:', tokens);
-      console.log('[DEBUG] Token:', token);
-      
+      if (DEBUG_MODE === 'ON' || DEBUG_MODE === 'on') {
+        console.log('[DEBUG] CHAT_AUTHORIZATION:', CHAT_AUTHORIZATION);
+        console.log('[DEBUG] Raw request:', request);
+        console.log('[DEBUG] Using authHeader:', request.headers.authorization);
+        console.log('[DEBUG] Tokens:', tokens);
+        console.log('[DEBUG] Token:', token);
+      } 
       const { model, conversation_id: convId, messages, search_type, stream } = request.body;
       if (stream) {
         const stream = await chat.createCompletionStream(
